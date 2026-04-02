@@ -20,8 +20,6 @@ export const heroSlides = [
   },
 ]
 
-export const heroCaptions = ['Business', 'Brand', 'Future']
-
 export const stats = [
   { target: 254, value: 'K+ Leads Generated', color: 'text-brand-blue' },
   { target: 100, value: 'M+ Reach', color: 'text-brand-red' },

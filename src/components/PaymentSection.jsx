@@ -2,60 +2,59 @@ import { FaFlag, FaGlobe, FaRegCopy } from 'react-icons/fa'
 
 function PaymentSection({ onCopyToClipboard }) {
   return (
-    <section className="py-12 bg-slate-50 border-t border-slate-200">
-      <div className="container mx-auto px-6">
-        <h3 className="text-2xl font-bold mb-8 text-center">Payment Details</h3>
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-            <h4 className="font-bold text-lg mb-4 flex items-center gap-2">
-              <FaFlag className="text-brand-orange" /> Indian Payments
-            </h4>
-            <div className="space-y-3 text-sm">
-              <div className="flex justify-between border-b pb-2">
-                <span className="text-slate-500">Account Name</span> <span className="font-semibold">Utkarsh Singh</span>
+    <section className="site-section site-section--alt" id="contact">
+      <div className="section-shell">
+        <div className="reveal-left" data-reveal>
+          <span className="section-label">Payment Details</span>
+          <h2 className="section-heading section-heading--xl" style={{ marginTop: '0.5rem' }}>
+            Secure <span style={{ color: 'var(--highlight)' }}>Payments</span>
+          </h2>
+        </div>
+
+        <div className="payment-grid" style={{ marginTop: '2rem' }}>
+          <div className="glass-card reveal-scale" data-reveal style={{ padding: '1.5rem' }}>
+            <h3 style={{ marginTop: 0, fontFamily: 'Syne, sans-serif' }}>
+              <FaFlag style={{ color: 'var(--accent-2)', marginRight: '0.55rem' }} /> Indian Payments
+            </h3>
+            <div className="section-lead" style={{ marginTop: '1rem', display: 'grid', gap: '0.8rem', fontSize: '0.98rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.6rem' }}>
+                <span className="small-muted">Account Name</span> <span>Utkarsh Singh</span>
               </div>
-              <div className="flex justify-between border-b pb-2">
-                <span className="text-slate-500">Bank</span> <span className="font-semibold">Kotak Mahindra</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.6rem' }}>
+                <span className="small-muted">Bank</span> <span>Kotak Mahindra</span>
               </div>
-              <div className="flex justify-between border-b pb-2">
-                <span className="text-slate-500">A/C No</span> <span className="font-semibold select-all">6049669529</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.6rem' }}>
+                <span className="small-muted">A/C No</span> <span>6049669529</span>
               </div>
-              <div className="flex justify-between border-b pb-2">
-                <span className="text-slate-500">IFSC</span> <span className="font-semibold select-all">KKBK0005336</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.6rem' }}>
+                <span className="small-muted">IFSC</span> <span>KKBK0005336</span>
               </div>
-              <div className="flex justify-between items-center pt-2">
-                <span className="text-slate-500">UPI ID</span>
-                <button
-                  onClick={() => onCopyToClipboard('utkarshsinghhh340@oksbi')}
-                  className="text-brand-blue font-semibold hover:underline flex items-center gap-1"
-                >
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', alignItems: 'center' }}>
+                <span className="small-muted">UPI ID</span>
+                <button className="btn-secondary" onClick={() => onCopyToClipboard('utkarshsinghhh340@oksbi')}>
                   Copy UPI <FaRegCopy />
                 </button>
               </div>
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-            <h4 className="font-bold text-lg mb-4 flex items-center gap-2">
-              <FaGlobe className="text-brand-blue" /> International
-            </h4>
-            <div className="space-y-4">
-              <div className="p-4 bg-blue-50 rounded-lg flex justify-between items-center gap-3">
-                <div>
-                  <div className="text-xs text-slate-500 uppercase font-bold">Payoneer</div>
-                  <div className="font-semibold text-sm break-all">utkarshsinghhh340@gmail.com</div>
-                </div>
-                <button onClick={() => onCopyToClipboard('utkarshsinghhh340@gmail.com')} className="text-brand-blue">
-                  <FaRegCopy />
+          <div className="glass-card reveal-scale" data-reveal style={{ padding: '1.5rem' }}>
+            <h3 style={{ marginTop: 0, fontFamily: 'Syne, sans-serif' }}>
+              <FaGlobe style={{ color: 'var(--accent)', marginRight: '0.55rem' }} /> International
+            </h3>
+            <div style={{ display: 'grid', gap: '1rem', marginTop: '1rem' }}>
+              <div className="glass-card" style={{ padding: '1rem 1.1rem', boxShadow: 'none' }}>
+                <div className="small-muted" style={{ fontFamily: 'Space Mono, monospace', fontSize: '0.68rem', letterSpacing: '0.14em' }}>Payoneer</div>
+                <div style={{ marginTop: '0.35rem' }}>utkarshsinghhh340@gmail.com</div>
+                <button className="btn-ghost" style={{ marginTop: '0.8rem' }} onClick={() => onCopyToClipboard('utkarshsinghhh340@gmail.com')}>
+                  Copy <FaRegCopy />
                 </button>
               </div>
-              <div className="p-4 bg-blue-50 rounded-lg flex justify-between items-center gap-3">
-                <div>
-                  <div className="text-xs text-slate-500 uppercase font-bold">PayPal</div>
-                  <div className="font-semibold text-sm">@UtkarshSingh521</div>
-                </div>
-                <button onClick={() => onCopyToClipboard('@UtkarshSingh521')} className="text-brand-blue">
-                  <FaRegCopy />
+              <div className="glass-card" style={{ padding: '1rem 1.1rem', boxShadow: 'none' }}>
+                <div className="small-muted" style={{ fontFamily: 'Space Mono, monospace', fontSize: '0.68rem', letterSpacing: '0.14em' }}>PayPal</div>
+                <div style={{ marginTop: '0.35rem' }}>@UtkarshSingh521</div>
+                <button className="btn-ghost" style={{ marginTop: '0.8rem' }} onClick={() => onCopyToClipboard('@UtkarshSingh521')}>
+                  Copy <FaRegCopy />
                 </button>
               </div>
             </div>

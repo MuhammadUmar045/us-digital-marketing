@@ -1,6 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import IntroOverlay from './components/IntroOverlay'
 import Navbar from './components/Navbar'
 import HeroSection from './components/HeroSection'
@@ -13,10 +11,8 @@ import PaymentSection from './components/PaymentSection'
 import OwnerSection from './components/OwnerSection'
 import FooterSection from './components/FooterSection'
 import FloatingContacts from './components/FloatingContacts'
-import { categories, heroCaptions, heroSlides, introTexts, pricingPlans, stats } from './data/siteData'
+import { heroSlides, introTexts, pricingPlans, stats, categories } from './data/siteData'
 import { fallbackIcon, iconMap } from './utils/iconMap'
-
-gsap.registerPlugin(ScrollTrigger)
 
 function App() {
   const [introVisible, setIntroVisible] = useState(true)
@@ -24,8 +20,7 @@ function App() {
   const [startTyping, setStartTyping] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [captionVisible, setCaptionVisible] = useState(true)
+  const currentSlide = 0
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [typewriterText, setTypewriterText] = useState('')
   const [textIndex, setTextIndex] = useState(0)
@@ -38,32 +33,10 @@ function App() {
   const pricingRef = useRef(null)
   const counterRefs = useRef([])
 
-  const activeCaption = heroCaptions[currentSlide]
-
   const endIntro = () => {
     if (hasEndedIntroRef.current) return
     hasEndedIntroRef.current = true
-
-    if (!introOverlayRef.current) {
-      setIntroVisible(false)
-      return
-    }
-
-    gsap.to(introOverlayRef.current, {
-      opacity: 0,
-      duration: 1,
-      onComplete: () => {
-        setIntroVisible(false)
-        if (homeRef.current) {
-          gsap.from(homeRef.current.querySelectorAll('h1, p'), {
-            y: 30,
-            opacity: 0,
-            duration: 1,
-            stagger: 0.15,
-          })
-        }
-      },
-    })
+    setIntroVisible(false)
   }
 
   const openPayment = (planName) => {
@@ -147,45 +120,34 @@ function App() {
   }, [])
 
   useEffect(() => {
-    const interval = window.setInterval(() => {
-      setCaptionVisible(false)
-      window.setTimeout(() => {
-        setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
-        setCaptionVisible(true)
-      }, 500)
-    }, 3000)
+    const elements = document.querySelectorAll('[data-reveal]')
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.16, rootMargin: '0px 0px -10% 0px' },
+    )
 
-    return () => window.clearInterval(interval)
+    elements.forEach((element) => observer.observe(element))
+    return () => observer.disconnect()
   }, [])
 
   useEffect(() => {
-    const animations = []
-
-    counterRefs.current.forEach((counterEl, index) => {
-      if (!counterEl) return
-      animations.push(
-        gsap.to(counterEl, {
-          innerHTML: stats[index].target,
-          duration: 2,
-          snap: { innerHTML: 1 },
-          scrollTrigger: {
-            trigger: counterEl,
-            start: 'top 85%',
-          },
-        }),
-      )
-    })
-
-    return () => {
-      animations.forEach((animation) => {
-        animation.scrollTrigger?.kill()
-        animation.kill()
-      })
-    }
+    const root = document.documentElement
+    root.style.setProperty('--page-accent', '#0055FF')
+    root.style.setProperty('--page-accent-2', '#FF4D4D')
+    root.style.setProperty('--page-highlight', '#00E5FF')
+    return () => {}
   }, [])
 
   return (
-    <div className="bg-slate-50 text-slate-800 antialiased">
+    <div className="app-shell">
+      <div className="page-grain" aria-hidden="true" />
       <IntroOverlay
         isVisible={introVisible}
         typewriterText={typewriterText}
@@ -204,8 +166,6 @@ function App() {
       <HeroSection
         homeRef={homeRef}
         currentSlide={currentSlide}
-        captionVisible={captionVisible}
-        activeCaption={activeCaption}
         heroSlides={heroSlides}
       />
 

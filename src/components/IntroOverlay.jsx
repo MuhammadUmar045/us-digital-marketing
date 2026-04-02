@@ -927,7 +927,7 @@ function IntroOverlay({ isVisible, typewriterText, skipVisible, onSkip, overlayR
                 </div>
                 <strong>We turn clicks into booked calls.</strong>
                 <p>
-                  The intro stays visually loud, responsive to pointer movement, and aligned with the site&apos;s growth-first tone.
+                  We turn Clinics, Gyms & Salons into market leaders — with Google Ads, Meta Ads & YouTube Marketing that actually delivers ROI.
                 </p>
               </aside>
             </div>

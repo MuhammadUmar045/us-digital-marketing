@@ -1,24 +1,68 @@
+import { useEffect, useRef, useState } from 'react'
+
 function StatsSection({ stats, counterRefs }) {
+  const sectionRef = useRef(null)
+  const [values, setValues] = useState(stats.map(() => 0))
+
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section) return undefined
+
+    const animateCounter = (target, index) => {
+      const duration = 1600
+      const start = performance.now()
+
+      const frame = (now) => {
+        const progress = Math.min((now - start) / duration, 1)
+        const eased = 1 - Math.pow(1 - progress, 3)
+        const nextValue = Math.round(target * eased)
+
+        setValues((currentValues) => {
+          const nextValues = [...currentValues]
+          nextValues[index] = nextValue
+          return nextValues
+        })
+
+        if (progress < 1) {
+          window.requestAnimationFrame(frame)
+        }
+      }
+
+      window.requestAnimationFrame(frame)
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return
+          stats.forEach((item, index) => animateCounter(item.target, index))
+          observer.disconnect()
+        })
+      },
+      { threshold: 0.4 },
+    )
+
+    observer.observe(section)
+    return () => observer.disconnect()
+  }, [stats])
+
   return (
-    <section className="py-20 bg-brand-dark text-white relative overflow-hidden">
-      <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-      <div className="container mx-auto px-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+    <section ref={sectionRef} className="site-section site-section--soft stats-band">
+      <div className="section-shell">
+        <div className="stats-grid">
           {stats.map((item, index) => (
-            <div
+            <article
               key={item.value}
-              className="p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-colors"
+              ref={(el) => {
+                counterRefs.current[index] = el
+              }}
+              data-reveal
+              className="stat-card glass-card reveal-scale"
+              style={{ transitionDelay: `${index * 100}ms` }}
             >
-              <div
-                ref={(el) => {
-                  counterRefs.current[index] = el
-                }}
-                className={`text-4xl md:text-5xl font-display font-bold mb-2 counter ${item.color}`}
-              >
-                0
-              </div>
-              <div className="text-sm text-gray-400 uppercase tracking-wider">{item.value}</div>
-            </div>
+              <div className="stat-number">{values[index]}</div>
+              <div className="stat-label">{item.value}</div>
+            </article>
           ))}
         </div>
       </div>

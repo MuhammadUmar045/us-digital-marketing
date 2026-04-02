@@ -1,21 +1,23 @@
 function OwnerSection() {
   return (
-    <section className="py-24 bg-white">
-      <div className="container mx-auto px-6 text-center">
-        <div className="max-w-2xl mx-auto bg-slate-50 rounded-3xl p-10 border border-slate-100 relative">
-          <div className="w-24 h-24 bg-slate-200 rounded-full mx-auto mb-6 overflow-hidden border-4 border-white shadow-lg">
-            <img
-              src="https://ui-avatars.com/api/?name=Utkarsh+Singh&background=2563EB&color=fff&size=128"
-              alt="Utkarsh Singh"
-              className="w-full h-full"
-            />
+    <section className="site-section site-section--soft">
+      <div className="section-shell">
+        <div className="owner-card glass-card reveal-scale" data-reveal>
+          <div style={{ display: 'grid', placeItems: 'center', gap: '1rem', textAlign: 'center' }}>
+            <div style={{ width: '7rem', height: '7rem', borderRadius: '999px', overflow: 'hidden', border: '1px solid rgba(0,85,255,0.24)', boxShadow: '0 0 40px rgba(0,85,255,0.16)' }}>
+              <img
+                src="https://ui-avatars.com/api/?name=Utkarsh+Singh&background=0055FF&color=fff&size=256"
+                alt="Utkarsh Singh"
+                style={{ width: '100%', height: '100%' }}
+              />
+            </div>
+            <h3 style={{ margin: 0, fontFamily: 'Syne, sans-serif', fontSize: '2rem' }}>Utkarsh Singh</h3>
+            <p className="section-label" style={{ color: 'var(--accent)' }}>Founder & CEO</p>
+            <p className="section-lead" style={{ maxWidth: '60ch' }}>
+              "With over 4 years of dedicated experience in digital marketing, my mission is to bridge the gap between local
+              businesses and the digital world. We don't just run ads; we build growth engines."
+            </p>
           </div>
-          <h3 className="text-2xl font-bold mb-2">Utkarsh Singh</h3>
-          <p className="text-brand-blue font-semibold mb-4">Founder & CEO</p>
-          <p className="text-slate-600 italic">
-            "With over 4 years of dedicated experience in digital marketing, my mission is to bridge the gap between local
-            businesses and the digital world. We don't just run ads; we build growth engines."
-          </p>
         </div>
       </div>
     </section>

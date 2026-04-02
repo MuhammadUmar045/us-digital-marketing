@@ -2,48 +2,59 @@ import { FaCheck } from 'react-icons/fa'
 
 function PricingSection({ pricingRef, pricingPlans, onOpenPayment }) {
   return (
-    <section id="pricing" ref={pricingRef} className="py-24 bg-white">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
-            Investment <span className="text-brand-red">Plans</span>
+    <section id="pricing" ref={pricingRef} className="site-section site-section--soft">
+      <div className="section-shell">
+        <div className="reveal-left" data-reveal>
+          <span className="section-label">Pricing</span>
+          <h2 className="section-heading section-heading--xl" style={{ marginTop: '0.5rem' }}>
+            Investment <span style={{ color: 'var(--accent-2)' }}>Plans</span>
           </h2>
-          <p className="text-slate-600">Transparent pricing for maximum growth.</p>
+          <p className="section-lead" style={{ maxWidth: '40rem', marginTop: '1rem' }}>
+            Transparent pricing for maximum growth.
+          </p>
         </div>
 
-        <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-6">
-          {pricingPlans.map((plan) => (
-            <div
+        <div className="pricing-grid" style={{ marginTop: '2rem' }}>
+          {pricingPlans.map((plan, index) => (
+            <article
               key={plan.name}
-              className={
-                plan.featured
-                  ? 'bg-brand-dark text-white rounded-2xl p-6 shadow-2xl transform md:-translate-y-4 relative overflow-hidden'
-                  : 'bg-white border border-slate-200 rounded-2xl p-6 hover:border-brand-blue hover:shadow-xl transition-all duration-300 group'
-              }
+              className={`glass-card pricing-card reveal-scale ${plan.featured ? 'featured' : ''}`}
+              data-reveal
+              style={{ transitionDelay: `${index * 100}ms` }}
             >
               {plan.featured && (
-                <div className="absolute top-0 right-0 bg-brand-red text-xs font-bold px-3 py-1 rounded-bl-lg">POPULAR</div>
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '1rem',
+                    right: '1rem',
+                    padding: '0.35rem 0.65rem',
+                    borderRadius: '999px',
+                    background: 'rgba(255,77,77,0.14)',
+                    color: '#fff',
+                    fontFamily: 'Space Mono, monospace',
+                    fontSize: '0.68rem',
+                    letterSpacing: '0.14em',
+                  }}
+                >
+                  POPULAR
+                </div>
               )}
-              <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
-              <div className="text-3xl font-display font-bold text-brand-blue mb-4">{plan.price}</div>
-              <ul className={`space-y-3 text-sm ${plan.featured ? 'text-gray-300' : 'text-slate-600'} mb-6`}>
+              <h3 style={{ fontFamily: 'Syne, sans-serif', margin: 0, fontSize: '1.4rem' }}>{plan.name}</h3>
+              <div style={{ marginTop: '0.85rem', fontFamily: 'Syne, sans-serif', fontSize: '2.4rem', color: 'var(--accent)' }}>
+                {plan.price}
+              </div>
+              <ul style={{ listStyle: 'none', padding: 0, margin: '1rem 0 1.4rem', display: 'grid', gap: '0.85rem' }}>
                 {plan.lines.map((line) => (
-                  <li key={line} className="flex items-center gap-2">
-                    <FaCheck className={plan.featured ? 'text-brand-blue' : 'text-green-500'} /> {line}
+                  <li key={line} style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', color: 'rgba(255,255,255,0.82)' }}>
+                    <FaCheck style={{ color: 'var(--highlight)' }} /> {line}
                   </li>
                 ))}
               </ul>
-              <button
-                onClick={() => onOpenPayment(plan.selected)}
-                className={
-                  plan.featured
-                    ? 'w-full py-2 bg-brand-blue text-white rounded-lg font-semibold hover:bg-blue-600 transition-colors'
-                    : 'w-full py-2 border border-brand-blue text-brand-blue rounded-lg font-semibold group-hover:bg-brand-blue group-hover:text-white transition-colors'
-                }
-              >
+              <button className="btn-outline" style={{ width: '100%' }} onClick={() => onOpenPayment(plan.selected)}>
                 Choose
               </button>
-            </div>
+            </article>
           ))}
         </div>
       </div>
