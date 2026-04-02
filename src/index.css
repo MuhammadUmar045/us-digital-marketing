@@ -442,12 +442,12 @@ body::before {
   z-index: 2;
   width: min(100%, 1400px);
   margin: 0 auto;
-  min-height: 100dvh;
+  min-height: calc(100dvh - 84px);
   display: grid;
   grid-template-columns: 55% 45%;
   gap: 2rem;
-  align-items: center;
-  padding: 6rem clamp(1.25rem, 4vw, 5rem) 5rem;
+  align-items: start;
+  padding: clamp(2.7rem, 4.4vw, 3.95rem) clamp(1.25rem, 4vw, 5rem) 4.4rem;
 }
 
 .hero-copy {
@@ -1047,7 +1047,7 @@ body::before {
   }
 
   .hero-content {
-    padding-top: 7rem;
+    padding-top: 5.4rem;
   }
 
   .nav-logo span:last-child {
@@ -1078,7 +1078,7 @@ body::before {
   .hero-content {
     grid-template-columns: 1fr;
     gap: 2.5rem;
-    padding-top: 6rem;
+    padding-top: 4.9rem;
   }
 
   .hero-visual {
