@@ -148,10 +148,10 @@ function HeroSection({ homeRef, currentSlide, heroSlides }) {
               <div className="hero-dashboard-overlay" />
               <div className="hero-dashboard-caption">
                 <div>
-                  <strong style={{ fontFamily: 'Syne, sans-serif', fontSize: '1.6rem' }}>Strategic Growth</strong>
-                  <span style={{ color: 'rgba(255,255,255,0.72)' }}>Data Driven Results</span>
+                  <strong style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.6rem', fontWeight: 600 }}>Strategic Growth</strong>
+                  <span style={{ color: 'var(--muted)' }}>Data Driven Results</span>
                 </div>
-                <div style={{ textAlign: 'right', color: 'rgba(255,255,255,0.78)', fontFamily: 'Space Mono, monospace' }}>
+                <div style={{ textAlign: 'right', color: 'var(--muted)', fontFamily: 'Montserrat, sans-serif', letterSpacing: '0.08em', textTransform: 'uppercase', fontSize: '0.72rem' }}>
                   <span>{heroWords[wordIndex]}</span>
                   <span>Live Campaign View</span>
                 </div>
