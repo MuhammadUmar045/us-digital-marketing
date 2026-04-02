@@ -15,13 +15,14 @@ function ServicesSection({ categories, iconMap, fallbackIcon, onSelectCategory }
         <div className="services-grid" style={{ marginTop: '2rem' }}>
           {categories.map((category, index) => {
             const IconComponent = iconMap[category.icon] || fallbackIcon
+            const revealDelay = Math.min(index * 45, 180)
             return (
               <button
                 key={category.name}
                 onClick={() => onSelectCategory(category)}
                 className="glass-card service-card reveal-scale"
                 data-reveal
-                style={{ transitionDelay: `${index * 120}ms`, textAlign: 'left' }}
+                style={{ transitionDelay: `${revealDelay}ms`, textAlign: 'left' }}
               >
                 <div className="service-icon">
                   <IconComponent style={{ fontSize: '1.55rem' }} />

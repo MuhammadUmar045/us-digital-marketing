@@ -130,7 +130,7 @@ function App() {
           }
         })
       },
-      { threshold: 0.16, rootMargin: '0px 0px -10% 0px' },
+      { threshold: 0.1, rootMargin: '0px 0px -4% 0px' },
     )
 
     elements.forEach((element) => observer.observe(element))
