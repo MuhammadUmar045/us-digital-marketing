@@ -1,59 +1,53 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { FaArrowRight } from 'react-icons/fa'
 
 const heroWords = ['Clinics', 'Gyms', 'Salons', 'Businesses']
 
-function HeroSection({ homeRef, currentSlide, heroSlides }) {
+function HeroSection({ homeRef, heroSlides }) {
   const [buttonOffset, setButtonOffset] = useState({ x: 0, y: 0 })
   const [wordIndex, setWordIndex] = useState(0)
   const [charIndex, setCharIndex] = useState(0)
   const [phase, setPhase] = useState('typing')
   const [isFocusedByUser, setIsFocusedByUser] = useState(false)
 
+  // ── Auto-cycling slide index ──────────────────────────────
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const slideTimer = useRef(null)
+
+  useEffect(() => {
+    if (!heroSlides || heroSlides.length === 0) return
+    slideTimer.current = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
+    }, 2000)
+    return () => clearInterval(slideTimer.current)
+  }, [heroSlides])
+
+  // ── Typewriter ────────────────────────────────────────────
   useEffect(() => {
     const currentWord = heroWords[wordIndex]
     let delay = 95
-
-    if (phase === 'pause') {
-      delay = 1200
-    }
-
-    if (phase === 'deleting') {
-      delay = 50
-    }
-
-    if (phase === 'switching') {
-      delay = 380
-    }
+    if (phase === 'pause') delay = 1200
+    if (phase === 'deleting') delay = 50
+    if (phase === 'switching') delay = 380
 
     const timer = window.setTimeout(() => {
       if (phase === 'typing') {
         const next = Math.min(charIndex + 1, currentWord.length)
         setCharIndex(next)
-        if (next === currentWord.length) {
-          setPhase('pause')
-        }
+        if (next === currentWord.length) setPhase('pause')
         return
       }
-
       if (phase === 'pause') {
-        if (isFocusedByUser) {
-          setPhase('typing')
-          return
-        }
+        if (isFocusedByUser) { setPhase('typing'); return }
         setPhase('deleting')
         return
       }
-
       if (phase === 'deleting') {
         const next = Math.max(charIndex - 1, 0)
         setCharIndex(next)
-        if (next === 0) {
-          setPhase('switching')
-        }
+        if (next === 0) setPhase('switching')
         return
       }
-
       if (phase === 'switching') {
         setWordIndex((prev) => (prev + 1) % heroWords.length)
         setPhase('typing')
@@ -69,7 +63,6 @@ function HeroSection({ homeRef, currentSlide, heroSlides }) {
     const y = Math.max(-8, Math.min(8, (event.clientY - bounds.top - bounds.height / 2) * 0.08))
     setButtonOffset({ x, y })
   }
-
   const handleMagneticLeave = () => setButtonOffset({ x: 0, y: 0 })
 
   const typedWord = heroWords[wordIndex].slice(0, charIndex)
@@ -78,6 +71,15 @@ function HeroSection({ homeRef, currentSlide, heroSlides }) {
     setWordIndex(index)
     setCharIndex(heroWords[index].length)
     setPhase('pause')
+  }
+
+  // Manual slide control — restart auto-timer on manual click
+  const goToSlide = (index) => {
+    setCurrentSlide(index)
+    clearInterval(slideTimer.current)
+    slideTimer.current = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
+    }, 2000)
   }
 
   return (
@@ -139,19 +141,69 @@ function HeroSection({ homeRef, currentSlide, heroSlides }) {
           </div>
         </div>
 
+        {/* ── Hero visual with auto-sliding banner ── */}
         <div className="hero-visual reveal-scale" data-reveal>
           <div className="hero-dashboard">
             <div className="hero-dashboard-media">
               {heroSlides.map((slide, index) => (
-                <img key={slide.src} src={slide.src} alt={slide.alt} className={currentSlide === index ? 'is-active' : ''} />
+                <img
+                  key={slide.src}
+                  src={slide.src}
+                  alt={slide.alt}
+                  className={currentSlide === index ? 'is-active' : ''}
+                  style={{
+                    transition: 'opacity 0.7s ease, transform 0.7s ease',
+                  }}
+                />
               ))}
               <div className="hero-dashboard-overlay" />
+
+              {/* Slide dots */}
+              {heroSlides.length > 1 && (
+                <div style={{
+                  position: 'absolute',
+                  bottom: '3.5rem',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  display: 'flex',
+                  gap: '6px',
+                  zIndex: 4,
+                }}>
+                  {heroSlides.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => goToSlide(i)}
+                      style={{
+                        width: i === currentSlide ? '20px' : '6px',
+                        height: '6px',
+                        borderRadius: i === currentSlide ? '3px' : '50%',
+                        background: i === currentSlide ? '#00e5ff' : 'rgba(255,255,255,0.3)',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: 0,
+                        transition: 'all 0.3s ease',
+                      }}
+                      aria-label={`Go to slide ${i + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
+
               <div className="hero-dashboard-caption">
                 <div>
-                  <strong style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.6rem', fontWeight: 600 }}>Strategic Growth</strong>
+                  <strong style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.6rem', fontWeight: 600 }}>
+                    Strategic Growth
+                  </strong>
                   <span style={{ color: 'var(--muted)' }}>Data Driven Results</span>
                 </div>
-                <div style={{ textAlign: 'right', color: 'var(--muted)', fontFamily: 'Montserrat, sans-serif', letterSpacing: '0.08em', textTransform: 'uppercase', fontSize: '0.72rem' }}>
+                <div style={{
+                  textAlign: 'right',
+                  color: 'var(--muted)',
+                  fontFamily: 'Montserrat, sans-serif',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  fontSize: '0.72rem',
+                }}>
                   <span>{heroWords[wordIndex]}</span>
                   <span>Live Campaign View</span>
                 </div>

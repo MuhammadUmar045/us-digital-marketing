@@ -1,0 +1,135 @@
+/* ── Circular logo ───────────────────────────────────────── */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+}
+
+.nav-logo-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid rgba(0, 85, 255, 0.35);
+  box-shadow: 0 0 0 1px rgba(0, 229, 255, 0.15);
+}
+
+.nav-logo-img {
+  /* The logo has white padding around the circle.
+     Scale up and shift down slightly so only the
+     circular badge fills the frame. */
+  width: 140%;
+  height: 140%;
+  object-fit: cover;
+  object-position: center 30%;
+  margin-left: -20%;
+  margin-top: -15%;
+  display: block;
+}
+
+.nav-logo-text {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 0.82rem;
+  color: #fff;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+  max-width: 120px;
+}
+
+/* ── Search wrap ─────────────────────────────────────────── */
+.nav-search-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(0, 85, 255, 0.22);
+  border-radius: 999px;
+  overflow: hidden;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.25s ease,
+              box-shadow 0.25s ease;
+  width: 36px;
+  height: 36px;
+}
+
+.nav-search-wrap--open {
+  width: 200px;
+  border-color: rgba(0, 229, 255, 0.45);
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.12);
+}
+
+.nav-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  padding: 0 0 0 0.75rem;
+  width: 0;
+  opacity: 0;
+  transition: opacity 0.2s ease 0.1s;
+}
+
+.nav-search-wrap--open .nav-search-input {
+  width: auto;
+  opacity: 1;
+}
+
+.nav-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.nav-search-btn {
+  background: transparent;
+  border: none;
+  color: #8a9bb5;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.nav-search-btn:hover {
+  color: #00e5ff;
+}
+
+/* ── Mobile search ───────────────────────────────────────── */
+.nav-mobile-search {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 85, 255, 0.22);
+  border-radius: 8px;
+  padding: 0.55rem 0.9rem;
+  margin: 0.25rem 0;
+}
+
+.nav-mobile-search-icon {
+  color: #8a9bb5;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.nav-mobile-search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  width: 100%;
+}
+
+.nav-mobile-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}

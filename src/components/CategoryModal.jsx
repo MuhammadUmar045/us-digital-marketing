@@ -1,126 +1,110 @@
-import { useMemo, useState } from 'react'
-import { FaCheckCircle, FaRegClock, FaTimes } from 'react-icons/fa'
+import { useEffect, useRef, useState } from 'react'
+import './CategoryModal.css'
+
+function useTypewriter(text, speed, enabled) {
+  const [displayed, setDisplayed] = useState('')
+  const timerRef = useRef(null)
+
+  useEffect(() => {
+    if (!enabled || !text) {
+      setDisplayed('')
+      return
+    }
+    setDisplayed('')
+    let i = 0
+    const tick = () => {
+      setDisplayed(text.substring(0, i))
+      if (i++ <= text.length) {
+        timerRef.current = setTimeout(tick, speed)
+      }
+    }
+    timerRef.current = setTimeout(tick, speed)
+    return () => clearTimeout(timerRef.current)
+  }, [text, speed, enabled])
+
+  return displayed
+}
 
 function CategoryModal({ selectedCategory, onClose }) {
-  const [activeTab, setActiveTab] = useState('overview')
+  const [isOpen, setIsOpen] = useState(false)
+  const [activeCategory, setActiveCategory] = useState(null)
+  const [phase, setPhase] = useState('idle') // 'idle' | 'name' | 'desc'
 
-  const modalImage = useMemo(() => {
-    if (!selectedCategory) return ''
-    return `https://source.unsplash.com/800x400/?${selectedCategory.name},business`
+  useEffect(() => {
+    if (selectedCategory) {
+      setActiveCategory(selectedCategory)
+      setPhase('idle')
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setIsOpen(true)
+          setTimeout(() => setPhase('name'), 80)
+        })
+      })
+      document.body.style.overflow = 'hidden'
+    }
   }, [selectedCategory])
 
-  const growthPlan = useMemo(
-    () => [
-      `Audience segmentation for ${selectedCategory?.name || 'your industry'} by buying intent`,
-      'Conversion-focused ad creatives and offer framing',
-      'Landing page alignment with lead qualification filters',
-      'Weekly optimization with CPL, CTR, and booked-call tracking',
-    ],
-    [selectedCategory],
-  )
+  const handleClose = () => {
+    setIsOpen(false)
+    setPhase('idle')
+    document.body.style.overflow = ''
+    setTimeout(onClose, 420)
+  }
 
-  const timelinePlan = useMemo(
-    () => [
-      'Week 1: Market audit, messaging blueprint, and campaign architecture',
-      'Week 2: Launch + tracking validation + first optimization sprint',
-      'Week 3-4: Scale winning ad sets and tighten conversion flow',
-    ],
-    [],
-  )
+  useEffect(() => {
+    const handler = (e) => { if (e.key === 'Escape') handleClose() }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [isOpen])
 
-  if (!selectedCategory) return null
+  const nameText = activeCategory?.name?.toUpperCase() ?? ''
+  const descText = activeCategory?.desc ?? ''
+
+  const typedName = useTypewriter(nameText, 75, phase === 'name' || phase === 'desc')
+  const nameFinished = typedName.length >= nameText.length
+
+  const typedDesc = useTypewriter(descText, 20, phase === 'desc' && nameFinished)
+  const descFinished = typedDesc.length >= descText.length
+
+  useEffect(() => {
+    if (phase === 'name' && nameFinished) setPhase('desc')
+  }, [nameFinished, phase])
+
+  if (!activeCategory && !isOpen) return null
+
+  const tags = activeCategory?.chips ?? activeCategory?.tags ?? []
 
   return (
-    <div className="category-modal-backdrop" onClick={onClose}>
-      <div className="category-modal glass-card" onClick={(event) => event.stopPropagation()}>
-        <div style={{ position: 'relative', minHeight: '220px' }}>
-          <img src={modalImage} alt={selectedCategory.name} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.42 }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(8,12,20,0.1), rgba(8,12,20,0.9))' }} />
-          <button
-            onClick={onClose}
-            style={{ position: 'absolute', top: '1rem', right: '1rem' }}
-            className="social-icon"
-          >
-            <FaTimes />
-          </button>
-          <h3 style={{ position: 'absolute', left: '1.4rem', bottom: '1.2rem', margin: 0, fontFamily: 'Syne, sans-serif', fontSize: '2.2rem' }}>
-            {selectedCategory.name}
-          </h3>
-        </div>
-        <div style={{ padding: '1.4rem' }}>
-          <div className="category-modal-tabs">
-            <button
-              className={`category-tab ${activeTab === 'overview' ? 'is-active' : ''}`}
-              onClick={() => setActiveTab('overview')}
-            >
-              Overview
-            </button>
-            <button
-              className={`category-tab ${activeTab === 'growth' ? 'is-active' : ''}`}
-              onClick={() => setActiveTab('growth')}
-            >
-              Growth Blueprint
-            </button>
-            <button
-              className={`category-tab ${activeTab === 'timeline' ? 'is-active' : ''}`}
-              onClick={() => setActiveTab('timeline')}
-            >
-              Timeline
-            </button>
-          </div>
+    <div className={`cat-detail${isOpen ? ' open' : ''}`}>
+      <button className="cat-back-btn" onClick={handleClose}>
+        ← BACK TO EMPIRE
+      </button>
 
-          {activeTab === 'overview' && (
-            <div className="category-modal-panel">
-              <p className="section-lead" style={{ marginTop: 0 }}>
-                {selectedCategory.desc} We create tailored ad campaigns specifically for {selectedCategory.name} businesses to
-                ensure maximum ROI and customer acquisition.
-              </p>
-              <div className="category-modal-chips">
-                <span>Lead Generation</span>
-                <span>Paid Ads</span>
-                <span>Performance SEO</span>
-                <span>Conversion Tracking</span>
-              </div>
-            </div>
-          )}
+      {activeCategory?.emoji && (
+        <div className="cat-d-icon">{activeCategory.emoji}</div>
+      )}
 
-          {activeTab === 'growth' && (
-            <div className="category-modal-panel">
-              <ul className="category-modal-list">
-                {growthPlan.map((line) => (
-                  <li key={line}>
-                    <FaCheckCircle />
-                    <span>{line}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {activeTab === 'timeline' && (
-            <div className="category-modal-panel">
-              <ul className="category-modal-list">
-                {timelinePlan.map((line) => (
-                  <li key={line}>
-                    <FaRegClock />
-                    <span>{line}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          <a
-            href="https://form.svhrt.com/698ace75247da1e2ca3c9de9"
-            target="_blank"
-            rel="noreferrer"
-            className="btn-primary"
-            style={{ marginTop: '0.9rem' }}
-          >
-            Get Quote for This Category
-          </a>
-        </div>
+      <div className="cat-d-name">
+        {typedName || '\u00A0'}
+        {(!nameFinished || (phase === 'desc' && !descFinished)) && (
+          <span className="cat-cursor" />
+        )}
       </div>
+
+      <div className="cat-d-desc">
+        {typedDesc || '\u00A0'}
+        {phase === 'desc' && !descFinished && <span className="cat-cursor" />}
+      </div>
+
+      <div className={`cat-tags${descFinished ? ' show' : ''}`}>
+        {tags.map((tag) => (
+          <span key={tag} className="cat-tag">{tag}</span>
+        ))}
+      </div>
+
+      <button className={`cat-cta${descFinished ? ' show' : ''}`}>
+        ▶ Activate This Engine
+      </button>
     </div>
   )
 }

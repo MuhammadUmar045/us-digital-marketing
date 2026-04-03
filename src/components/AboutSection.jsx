@@ -30,40 +30,31 @@ function AboutSection() {
           </div>
 
           <h2 className="section-heading section-heading--xl" style={{ maxWidth: '12ch' }}>
-            Transforming Local Businesses into <span style={{ color: 'var(--accent-2)' }}>Market Leaders</span>
+            Turning Local Businesses into <span style={{ color: 'var(--accent-2)' }}>Market Leaders</span>
           </h2>
 
           <p className="section-lead" style={{ marginTop: '1.2rem' }}>
-            Founded in 2020 by <strong style={{ color: '#fff' }}>Utkarsh Singh</strong>, US Digital Marketing Services
-            (UDM) has rapidly become a trusted partner for local businesses seeking explosive growth.
+            Founded in 2020 by <strong style={{ color: '#fff' }}>Utkarsh Singh</strong>, UDM is a performance-first
+            marketing agency built for businesses that are serious about growth — not vanity metrics.
           </p>
-          <p className="section-lead" style={{ marginTop: '1rem' }}>
-            We specialize in high-performance digital strategies tailored for Clinics, Gyms, Salons, Real Estate, and
-            Retail. Unlike generic agencies, we understand the local pulse.
-          </p>
-          <p className="section-lead" style={{ marginTop: '1rem' }}>
-            Our expertise spans across <strong style={{ color: '#fff' }}>Google Ads</strong>, <strong style={{ color: '#fff' }}>Meta (Facebook/Instagram) Ads</strong>,
-            <strong style={{ color: '#fff' }}> YouTube Promotion</strong>, and comprehensive SEO strategies designed to maximize your ROI.
+          <p className="section-lead" style={{ marginTop: '0.9rem' }}>
+            We run precision campaigns across <strong style={{ color: '#fff' }}>Google</strong>,{' '}
+            <strong style={{ color: '#fff' }}>Meta</strong>, and <strong style={{ color: '#fff' }}>YouTube</strong> —
+            engineered to bring in real leads, real bookings, and real revenue for local businesses across 50+ industries.
           </p>
 
           <div className="about-list">
             <div className="about-item reveal" data-reveal style={{ transitionDelay: '100ms' }}>
-              <span className="about-check">
-                <FaCheck />
-              </span>
-              <span>Certified experts with full-funnel performance marketing strategy.</span>
+              <span className="about-check"><FaCheck /></span>
+              <span>Full-funnel strategy built for measurable ROI, not impressions.</span>
             </div>
             <div className="about-item reveal" data-reveal style={{ transitionDelay: '220ms' }}>
-              <span className="about-check">
-                <FaCheck />
-              </span>
-              <span>Always-on optimization designed to lift ROI while keeping acquisition costs efficient.</span>
+              <span className="about-check"><FaCheck /></span>
+              <span>Relentless optimization — we cut what doesn't work and scale what does.</span>
             </div>
             <div className="about-item reveal" data-reveal style={{ transitionDelay: '340ms' }}>
-              <span className="about-check">
-                <FaCheck />
-              </span>
-              <span>24/7 support built around fast response, clear communication, and reliable execution.</span>
+              <span className="about-check"><FaCheck /></span>
+              <span>Dedicated support with fast turnarounds and zero hand-holding needed.</span>
             </div>
           </div>
         </div>

@@ -21,10 +21,34 @@ export const heroSlides = [
 ]
 
 export const stats = [
-  { target: 254, value: 'K+ Leads Generated', color: 'text-brand-blue' },
-  { target: 100, value: 'M+ Reach', color: 'text-brand-red' },
-  { target: 863, value: '% Avg ROI', color: 'text-brand-green' },
-  { target: 100, value: 'X Growth Potential', color: 'text-purple-400' },
+  {
+    value: '100X',
+    target: 100,
+    label: 'Revenue Growth',
+    detail:
+      'Our clients experience an average 100x return on their marketing investment within the first 12 months. Through precision targeting, conversion-optimised funnels, and relentless split-testing, we turn every rupee spent into compounding growth.',
+  },
+  {
+    value: '854%',
+    target: 854,
+    label: 'Average ROI',
+    detail:
+      'We track every click, lead, and sale. Our average campaign delivers 854% ROI across all verticals — from clinics to retail chains. Data-backed decisions, zero guesswork.',
+  },
+  {
+    value: '100M+',
+    target: 100,
+    label: 'Impressions',
+    detail:
+      'Over 100 million targeted impressions delivered across Google, Meta, YouTube, and programmatic channels. Reach that matters — served to the right audience at the right moment.',
+  },
+  {
+    value: '247K+',
+    target: 247,
+    label: 'Verified Leads',
+    detail:
+      '247,000+ verified, high-intent leads generated for our clients. Every lead is filtered, qualified, and delivered in real time — no junk, no cold lists, just ready-to-buy prospects.',
+  },
 ]
 
 export const categories = [

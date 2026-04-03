@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
 import IntroOverlay from './components/IntroOverlay'
 import Navbar from './components/Navbar'
 import HeroSection from './components/HeroSection'
 import StatsSection from './components/StatsSection'
 import AboutSection from './components/AboutSection'
 import ServicesSection from './components/ServicesSection'
-import CategoryModal from './components/CategoryModal'
+import ServicePage from './components/ServicePage'
 import PricingSection from './components/PricingSection'
 import PaymentSection from './components/PaymentSection'
 import OwnerSection from './components/OwnerSection'
@@ -13,15 +14,16 @@ import FooterSection from './components/FooterSection'
 import FloatingContacts from './components/FloatingContacts'
 import { heroSlides, introTexts, pricingPlans, stats, categories } from './data/siteData'
 import { fallbackIcon, iconMap } from './utils/iconMap'
+import TermsSection from './components/TermsSection'
 
-function App() {
+function AppContent() {
+  const navigate = useNavigate()
   const [introVisible, setIntroVisible] = useState(true)
   const [skipVisible, setSkipVisible] = useState(false)
   const [startTyping, setStartTyping] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const currentSlide = 0
-  const [selectedCategory, setSelectedCategory] = useState(null)
   const [typewriterText, setTypewriterText] = useState('')
   const [textIndex, setTextIndex] = useState(0)
   const [charIndex, setCharIndex] = useState(0)
@@ -48,6 +50,10 @@ function App() {
     navigator.clipboard.writeText(text).then(() => {
       alert(`Copied to clipboard: ${text}`)
     })
+  }
+
+  const handleSelectCategory = (category) => {
+    navigate(`/service/${encodeURIComponent(category.name)}`)
   }
 
   useEffect(() => {
@@ -176,17 +182,27 @@ function App() {
         categories={categories}
         iconMap={iconMap}
         fallbackIcon={fallbackIcon}
-        onSelectCategory={setSelectedCategory}
+        onSelectCategory={handleSelectCategory}
       />
-
-      <CategoryModal selectedCategory={selectedCategory} onClose={() => setSelectedCategory(null)} />
 
       <PricingSection pricingRef={pricingRef} pricingPlans={pricingPlans} onOpenPayment={openPayment} />
       <PaymentSection onCopyToClipboard={copyToClipboard} />
+      <TermsSection /> 
       <OwnerSection />
       <FooterSection />
       <FloatingContacts />
     </div>
+  )
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<AppContent />} />
+        <Route path="/service/:name" element={<ServicePage />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
