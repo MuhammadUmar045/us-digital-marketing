@@ -1,9 +1,19 @@
 import { FaEnvelope, FaWhatsapp } from 'react-icons/fa'
 
 function FloatingContacts() {
+  const email = 'businessgrowthservices@gmail.com'
+  const subject = encodeURIComponent('Digital Marketing Service Inquiry')
+  const body = encodeURIComponent('Hi, I am interested in your digital marketing services. Please share details.')
+  const mailtoUrl = `mailto:${email}?subject=${subject}&body=${body}`
+
   return (
     <div className="floating-contacts" aria-label="Contact shortcuts">
-      <a href="mailto:businessgrowthservicess@gmail.com" title="Send Email" style={{ background: 'rgba(255,255,255,0.04)', color: '#fff' }}>
+      <a
+        href={mailtoUrl}
+        title="Send Email"
+        aria-label="Send Email"
+        style={{ background: 'rgba(255,255,255,0.04)', color: '#fff' }}
+      >
         <FaEnvelope />
       </a>
       <a

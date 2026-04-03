@@ -91,7 +91,7 @@ function ServiceOverlay({ category, onClose }) {
 }
 
 /* ── ServicesSection ─────────────────────────────────────── */
-function ServicesSection({ categories, iconMap, fallbackIcon }) {
+function ServicesSection({ categories, iconMap, fallbackIcon, onSelectCategory }) {
   const [selected, setSelected] = useState(null)
   const doubled = [...categories, ...categories]
 
@@ -120,7 +120,14 @@ function ServicesSection({ categories, iconMap, fallbackIcon }) {
               return (
                 <button
                   key={`${category.name}-${index}`}
-                  onClick={() => setSelected(categories[index % categories.length])}
+                  onClick={() => {
+                    const clickedCategory = categories[index % categories.length]
+                    if (onSelectCategory) {
+                      onSelectCategory(clickedCategory)
+                      return
+                    }
+                    setSelected(clickedCategory)
+                  }}
                   className="s-card"
                 >
                   <div className="s-icon">

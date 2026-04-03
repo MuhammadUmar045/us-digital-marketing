@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { categories } from '../data/siteData'
+import { defaultCategoryBackground, getCategoryBackgroundImage, getAlternateBackgroundImage } from '../utils/categoryBackground'
 import './ServicePage.css'
 
 function useTypewriter(text, speed, enabled) {
@@ -27,15 +26,13 @@ function useTypewriter(text, speed, enabled) {
   return displayed
 }
 
-function ServicePage() {
-  const { name } = useParams()
-  const navigate = useNavigate()
-
-  const selectedCategory = categories.find(
-    (cat) => cat.name === decodeURIComponent(name),
-  )
+function ServicePage({ selectedCategory, onBack }) {
 
   const [phase, setPhase] = useState('idle')
+  const [imageError, setImageError] = useState(false)
+  const [imageTryCount, setImageTryCount] = useState(0)
+  const backgroundImage = getCategoryBackgroundImage(selectedCategory?.name)
+  const alternateImage = getAlternateBackgroundImage(selectedCategory?.name)
 
   // Start typing after mount
   useEffect(() => {
@@ -43,7 +40,7 @@ function ServicePage() {
     setPhase('idle')
     const t = setTimeout(() => setPhase('name'), 200)
     return () => clearTimeout(t)
-  }, [name])
+  }, [selectedCategory])
 
   const nameText = selectedCategory?.name?.toUpperCase() ?? ''
   const descText = selectedCategory
@@ -60,10 +57,24 @@ function ServicePage() {
     if (phase === 'name' && nameFinished) setPhase('desc')
   }, [nameFinished, phase])
 
+  useEffect(() => {
+    setImageError(false)
+    setImageTryCount(0)
+  }, [selectedCategory])
+
+  const handleImageError = () => {
+    setImageTryCount((prev) => prev + 1)
+    if (imageTryCount === 0) {
+      setImageError(false)
+    } else {
+      setImageError(true)
+    }
+  }
+
   if (!selectedCategory) {
     return (
       <div className="sp-page">
-        <button className="sp-back-btn" onClick={() => navigate('/#services')}>
+        <button className="sp-back-btn" onClick={onBack}>
           ← BACK TO EMPIRE
         </button>
         <div className="sp-name" style={{ color: '#ff4d4d' }}>NOT FOUND</div>
@@ -73,9 +84,30 @@ function ServicePage() {
 
   return (
     <div className="sp-page">
+      {imageTryCount < 2 && !imageError && (
+        <img
+          key={`img-${imageTryCount}`}
+          src={imageTryCount === 0 ? backgroundImage : alternateImage}
+          alt={selectedCategory.name}
+          className="sp-bg-image"
+          onError={handleImageError}
+          loading="eager"
+        />
+      )}
+      {imageError && (
+        <div
+          className="sp-bg-image"
+          style={{
+            background: 'linear-gradient(135deg, rgba(0, 85, 255, 0.15), rgba(255, 100, 100, 0.1))',
+            backdropFilter: 'blur(8px)',
+          }}
+        />
+      )}
+      <div className="sp-bg-overlay" />
+
       {/* Back button — top right */}
       <div className="sp-topbar">
-        <button className="sp-back-btn" onClick={() => navigate('/#services')}>
+        <button className="sp-back-btn" onClick={onBack}>
           ← BACK TO EMPIRE
         </button>
       </div>

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
 import IntroOverlay from './components/IntroOverlay'
 import Navbar from './components/Navbar'
 import HeroSection from './components/HeroSection'
@@ -16,13 +15,13 @@ import { heroSlides, introTexts, pricingPlans, stats, categories } from './data/
 import { fallbackIcon, iconMap } from './utils/iconMap'
 import TermsSection from './components/TermsSection'
 
-function AppContent() {
-  const navigate = useNavigate()
+function App() {
   const [introVisible, setIntroVisible] = useState(true)
   const [skipVisible, setSkipVisible] = useState(false)
   const [startTyping, setStartTyping] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState(null)
   const currentSlide = 0
   const [typewriterText, setTypewriterText] = useState('')
   const [textIndex, setTextIndex] = useState(0)
@@ -53,7 +52,14 @@ function AppContent() {
   }
 
   const handleSelectCategory = (category) => {
-    navigate(`/service/${encodeURIComponent(category.name)}`)
+    setSelectedCategory(category)
+  }
+
+  const handleBackFromService = () => {
+    setSelectedCategory(null)
+    window.setTimeout(() => {
+      document.getElementById('services')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 20)
   }
 
   useEffect(() => {
@@ -151,6 +157,10 @@ function AppContent() {
     return () => {}
   }, [])
 
+  if (selectedCategory) {
+    return <ServicePage selectedCategory={selectedCategory} onBack={handleBackFromService} />
+  }
+
   return (
     <div className="app-shell">
       <div className="page-grain" aria-hidden="true" />
@@ -192,17 +202,6 @@ function AppContent() {
       <FooterSection />
       <FloatingContacts />
     </div>
-  )
-}
-
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<AppContent />} />
-        <Route path="/service/:name" element={<ServicePage />} />
-      </Routes>
-    </BrowserRouter>
   )
 }
 
